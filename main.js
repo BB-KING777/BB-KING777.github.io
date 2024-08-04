@@ -12,8 +12,14 @@ const context = canvas.getContext('2d');
 const message = document.getElementById('message');
 
 // JSONファイルを読み込む
+
 fetch('https://www.dropbox.com/scl/fi/zzgwb057xqwa1b0x9woca/q_table_black.json?rlkey=0pifm4qjf3b681joxnq8uo0kt&st=f1q961zi&dl=1')
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
     .then(data => {
         const qTable = data;
         initGame(qTable);
