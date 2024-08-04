@@ -13,7 +13,7 @@ const message = document.getElementById('message');
 
 // JSONファイルを読み込む
 
-fetch('https://www.dropbox.com/scl/fi/zzgwb057xqwa1b0x9woca/q_table_black.json?rlkey=0pifm4qjf3b681joxnq8uo0kt&st=f1q961zi&dl=1')
+fetch('https://cors-anywhere.herokuapp.com/https://www.dropbox.com/scl/fi/zzgwb057xqwa1b0x9woca/q_table_black.json?rlkey=0pifm4qjf3b681joxnq8uo0kt&st=f1q961zi&dl=1')
     .then(response => {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
