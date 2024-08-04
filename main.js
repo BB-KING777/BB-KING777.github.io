@@ -10,23 +10,62 @@ let currentPlayer;
 const canvas = document.getElementById('board');
 const context = canvas.getContext('2d');
 const message = document.getElementById('message');
+const loading = document.getElementById('loading');
+const progress = document.getElementById('progress');
+const retryButton = document.getElementById('retry');
+
+// ロードメニューを表示
+loading.style.display = 'block';
 
 // JSONファイルを読み込む
+let qTable;
 
 fetch('https://cors-anywhere.herokuapp.com/https://www.dropbox.com/scl/fi/zzgwb057xqwa1b0x9woca/q_table_black.json?rlkey=0pifm4qjf3b681joxnq8uo0kt&st=f1q961zi&dl=1')
     .then(response => {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        return response.json();
+        // 総サイズを取得
+        const total = response.headers.get('content-length');
+        let loaded = 0;
+
+        // 読み込み進捗を監視
+        const reader = response.body.getReader();
+        const stream = new ReadableStream({
+            start(controller) {
+                function push() {
+                    reader.read().then(({ done, value }) => {
+                        if (done) {
+                            controller.close();
+                            return;
+                        }
+                        loaded += value.byteLength;
+                        progress.value = (loaded / total) * 100;
+                        controller.enqueue(value);
+                        push();
+                    });
+                }
+                push();
+            }
+        });
+
+        return new Response(stream).text().then(text => JSON.parse(text));
     })
     .then(data => {
-        const qTable = data;
-        initGame(qTable);
+        // ロードメニューを非表示
+        loading.style.display = 'none';
+        retryButton.style.display = 'block';
+        qTable = data;
+        initGame();
     })
-    .catch(error => console.error('Error loading JSON:', error));
+    .catch(error => {
+        console.error('Error loading JSON:', error);
+        loading.style.display = 'none';
+    });
 
-function initGame(qTable) {
+retryButton.addEventListener('click', resetGame);
+
+function initGame() {
     board = Array(8).fill().map(() => Array(8).fill(EMPTY));
     board[3][3] = WHITE;
     board[4][4] = WHITE;
@@ -35,6 +74,18 @@ function initGame(qTable) {
     currentPlayer = BLACK;
 
     canvas.addEventListener('click', (event) => handleClick(event, qTable));
+    drawBoard();
+}
+
+function resetGame() {
+    board = Array(8).fill().map(() => Array(8).fill(EMPTY));
+    board[3][3] = WHITE;
+    board[4][4] = WHITE;
+    board[3][4] = BLACK;
+    board[4][3] = BLACK;
+    currentPlayer = BLACK;
+    message.textContent = '';
+
     drawBoard();
 }
 
@@ -152,7 +203,7 @@ function displayWinner(qTable) {
     setTimeout(() => {
         const playAgain = confirm(winner + "\nWould you like to play again?");
         if (playAgain) {
-            initGame(qTable);
+            resetGame();
         }
     }, 100);
 }
