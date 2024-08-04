@@ -20,42 +20,20 @@ loading.style.display = 'block';
 // JSONファイルを読み込む
 let qTable;
 
-fetch('https://cors-anywhere.herokuapp.com/https://www.dropbox.com/scl/fi/zzgwb057xqwa1b0x9woca/q_table_black.json?rlkey=0pifm4qjf3b681joxnq8uo0kt&st=f1q961zi&dl=1')
+fetch('https://cors-anywhere.herokuapp.com/https://www.dropbox.com/scl/fi/zzgwb057xqwa1b0x9woca/q_table_black.json.gz?rlkey=0pifm4qjf3b681joxnq8uo0kt&st=f1q961zi&dl=1')
     .then(response => {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        // 総サイズを取得
-        const total = response.headers.get('content-length');
-        let loaded = 0;
-
-        // 読み込み進捗を監視
-        const reader = response.body.getReader();
-        const stream = new ReadableStream({
-            start(controller) {
-                function push() {
-                    reader.read().then(({ done, value }) => {
-                        if (done) {
-                            controller.close();
-                            return;
-                        }
-                        loaded += value.byteLength;
-                        progress.value = (loaded / total) * 100;
-                        controller.enqueue(value);
-                        push();
-                    });
-                }
-                push();
-            }
-        });
-
-        return new Response(stream).text().then(text => JSON.parse(text));
+        return response.arrayBuffer();
     })
     .then(data => {
+        const decompressedData = pako.ungzip(new Uint8Array(data), { to: 'string' });
+        qTable = JSON.parse(decompressedData);
+
         // ロードメニューを非表示
         loading.style.display = 'none';
         retryButton.style.display = 'block';
-        qTable = data;
         initGame();
     })
     .catch(error => {
