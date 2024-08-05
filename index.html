@@ -1,21 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Othello Game</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/1.0.10/pako.min.js"></script>
+    <title>Hoi4ニュースイベントメーカー</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Othello Game</h1>
-    <canvas id="board" width="400" height="400"></canvas>
-    <p id="message"></p>
-    <div id="loading" style="display: none;">
-        <p>Loading...</p>
-        <progress id="progress" value="0" max="100"></progress>
+    <div class="container">
+        <h1>Hoi4ニュースイベントメーカー</h1>
+        <form id="news-form">
+            <label for="title">タイトル:</label>
+            <input type="text" id="title" name="title" required>
+            
+            <label for="content">ニュース内容:</label>
+            <textarea id="content" name="content" required></textarea>
+            
+            <label for="comment">コメント:</label>
+            <textarea id="comment" name="comment" required></textarea>
+            
+            <label for="image">画像アップロード:</label>
+            <input type="file" id="image" name="image" accept="image/*" required>
+            
+            <button type="submit">プレビュー</button>
+        </form>
+        <div id="preview">
+            <div class="overlay">
+                <img id="uploaded-image" alt="Uploaded Image">
+                <div id="selection-box">
+                    <div class="resize-handle top-left"></div>
+                    <div class="resize-handle top-right"></div>
+                    <div class="resize-handle bottom-left"></div>
+                    <div class="resize-handle bottom-right"></div>
+                </div>
+            </div>
+            <canvas id="news-canvas"></canvas>
+        </div>
     </div>
-    <button id="retry" style="display: none;">Retry</button>
-    <script src="main.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
