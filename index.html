@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hoi4ニュースイベントメーカー</title>
+    <title>Hoi4ニュースイベントメーカー | カスタムニュース作成ツール</title>
+    <meta name="description" content="Hoi4ニュースイベントメーカーを使用して、カスタムニュースイベントを作成し、画像、タイトル、ニュース内容、コメントを自由に編集できます。">
+    <meta name="keywords" content="Hoi4, ニュースイベントメーカー, カスタムニュース, 画像編集, タイトル編集, コメント編集, SEO">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <h1>Hoi4ニュースイベントメーカー</h1>
+        <p>カスタムニュースイベントを簡単に作成できます。以下のフォームに入力して、プレビューを確認してください。</p>
         <form id="news-form">
             <label for="title">タイトル:</label>
             <input type="text" id="title" name="title" required>
@@ -26,7 +29,7 @@
         </form>
         <div id="preview">
             <div class="overlay">
-                <img id="uploaded-image" alt="Uploaded Image">
+                <img id="uploaded-image" alt="ユーザーがアップロードした画像">
                 <div id="selection-box">
                     <div class="resize-handle top-left"></div>
                     <div class="resize-handle top-right"></div>
@@ -36,7 +39,21 @@
             </div>
             <canvas id="news-canvas"></canvas>
         </div>
+        <p>他のツールについてもご覧ください: <a href="他のツールページへのリンク">coming soon</a></p>
+        <p>Hoi4の詳細については、<a href="https://store.steampowered.com/app/394360/Hearts_of_Iron_IV/?l=japanese" target="_blank">公式サイト</a>をご覧ください。</p>
+        <div class="social-share">
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://bb-king777.github.io/" target="_blank">Facebookでシェア</a>
+            <a href="https://twitter.com/intent/tweet?url=https://bb-king777.github.io/&text=カスタムニュースイベントを作成しました！" target="_blank">Twitterでシェア</a>
+        </div>
     </div>
-    <script src="script.js"></script>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-95624QMN5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-95624QMN5C');
+</script>
 </body>
 </html>
